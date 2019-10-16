@@ -22,8 +22,7 @@ function init() {
   clock = new THREE.Clock();
 
   camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 1, 1000);
-  camera.position.set(0, 10, 80);
-  // camera.lookAt(0, 0, 20);
+  camera.position.set(0, 0, 100);
 
   scene = new THREE.Scene();
 
@@ -67,7 +66,14 @@ function init() {
 
   container.appendChild(renderer.domElement);
   control = new OrbitControls(camera, renderer.domElement.parentNode);
-  control.target = new THREE.Vector3(0, 0, 0);
+  control.target = new THREE.Vector3(0, 0, 10);
+  control.enableZoom = false;
+  control.enablePan = false;
+  control.nableRotate = false;
+
+  control.maxPolarAngle = 1.5;
+  control.minPolarAngle = 1.5;
+
   stats = new Stats();
   container.appendChild(stats.dom);
   window.addEventListener('resize', onWindowResize, false);
