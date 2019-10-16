@@ -42,6 +42,9 @@ function init() {
   loader.load('../modules/collada/elf/elf.dae', function (collada) {
     var girl = collada.scene
     girl.position.x = 10
+    girl.scale.x = 4
+    girl.scale.y = 4
+    girl.scale.z = 2
     containerScene.add(girl);
   });
 
@@ -60,19 +63,21 @@ function init() {
 
   scene.add(containerScene)
 
-  renderer = new THREE.WebGLRenderer();
+  renderer = new THREE.WebGLRenderer({
+    preserveDrawingBuffer: true
+  });
   var gridHelper = new THREE.GridHelper(100, 10);
   scene.add(gridHelper)
 
   container.appendChild(renderer.domElement);
   control = new OrbitControls(camera, renderer.domElement.parentNode);
   control.target = new THREE.Vector3(0, 0, 10);
-  control.enableZoom = false;
-  control.enablePan = false;
-  control.nableRotate = false;
+  // control.enableZoom = false;
+  // control.enablePan = false;
+  // control.nableRotate = false;
 
-  control.maxPolarAngle = 1.5;
-  control.minPolarAngle = 1.5;
+  // control.maxPolarAngle = 1.5;
+  // control.minPolarAngle = 1.5;
 
   stats = new Stats();
   container.appendChild(stats.dom);
@@ -106,5 +111,11 @@ function initButtonEvent(params) {
   })
   btnRight.addEventListener('click', function () {
     containerScene.rotateY(-0.05)
+  })
+  document.getElementById('saveImage').addEventListener('click', function () {
+    var img = new Image()
+    img.src = renderer.domElement.toDataURL();//转化为base64
+    renderer.domElement.style.display = 'none'
+    document.body.appendChild(img)
   })
 }
