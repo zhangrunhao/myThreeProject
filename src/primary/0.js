@@ -39,9 +39,7 @@ function initScene() {
 
 function initObject() {
   var geometry = new THREE.CylinderGeometry(100, 150, 400, 300)
-  var material = new THREE.MeshBasicMaterial({
-    color: 0xFFFF00
-  })
+  var material = new THREE.MeshLambertMaterial()
   mesh = new THREE.Mesh(geometry, material)
   scene.add(mesh)
 }
