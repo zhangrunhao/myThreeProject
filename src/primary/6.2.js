@@ -4,6 +4,11 @@ var camera, scence, renderer;
 var mesh;
 var texture;
 
+import {
+  OrbitControls
+} from 'three/examples/jsm/controls/OrbitControls'
+
+
 var canvas = clock()
 init()
 animate()
@@ -14,6 +19,9 @@ function init() {
   document.body.appendChild(renderer.domElement)
   camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000)
   camera.position.z = 400
+  control = new OrbitControls(camera, renderer.domElement.parentNode);
+  control.target = new THREE.Vector3(0, 0, 10);
+  
   scence = new THREE.Scene()
 
   var gemotry = new THREE.CubeGeometry(150, 150, 150)

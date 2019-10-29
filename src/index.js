@@ -5,8 +5,16 @@ import {
   ColladaLoader
 } from 'three/examples/jsm/loaders/ColladaLoader.js';
 import {
+  OBJLoader
+} from 'three/examples/jsm/loaders/OBJLoader.js';
+import {
+  FBXLoader
+} from 'three/examples/jsm/loaders/FBXLoader.js';
+import {
   OrbitControls
 } from 'three/examples/jsm/controls/OrbitControls'
+
+import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
 
 var container, camera, scene, renderer, control, stats, mixer, clock, containerScene;
 
@@ -21,42 +29,73 @@ function init() {
 
   clock = new THREE.Clock();
 
-  camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 1, 1000);
-  camera.position.set(0, 0, 100);
+  camera = new THREE.PerspectiveCamera(25, window.innerWidth / window.innerHeight, 1, 1000);
+  camera.position.set(15, 10, -15);
 
   scene = new THREE.Scene();
 
   containerScene = new THREE.Scene()
 
+  var ambientLight = new THREE.AmbientLight( 0xffffff, 0.2 );
+  scene.add( ambientLight );
+
+  var pointLight = new THREE.PointLight( 0xffffff, 0.8 );
+  scene.add( camera );
+  camera.add( pointLight );
+
+  
   var loader = new ColladaLoader();
-  loader.load('../dae/Dragon 2.5_dae.dae', function (collada) {
-    var dargon = collada.scene
-    dargon.scale.copy({
-      x: 0.5,
-      y: 0.5,
-      z: 0.5
+  // var loader = new OBJLoader();
+  // var loader = new FBXLoader();
+  // loader.load('../dae/Dragon 2.5_dae.dae', function (collada) {
+  //   var dargon = collada.scene
+  //   dargon.scale.copy({
+  //     x: 0.5,
+  //     y: 0.5,
+  //     z: 0.5
+  //   })
+  //   containerScene.add(collada.scene);
+  // });
+
+  // loader.load('../modules/collada/elf/elf.dae', function (collada) {
+  //   var girl = collada.scene
+  //   girl.position.x = 10
+  //   girl.scale.x = 4
+  //   girl.scale.y = 4
+  //   girl.scale.z = 2
+  //   containerScene.add(girl);
+  // });
+
+  // TODO: 模型更换颜色
+  // loader.load('../modules/collada/stormtrooper/stormtrooper.dae', function (collada) {
+  // loader.load('../xuxu/55555.dae', function (collada) {
+  //   console.log(collada)
+  //   collada.scene.traverse((function (i) {
+  //     console.log(i)
+  //     // if (i.name === 'mixamorig_Head') {
+  //     //   i.scale.x = 3
+  //     //   i.scale.y = 3
+  //     //   i.scale.z = 3
+  //     // }
+  //     if (i.isMesh && i.name  === '圆柱') {
+  //       // console.log(i)
+  //       // i.scale.x = 2
+  //       // i.material.color.setHex(0x1A75FF)
+  //     }
+  //   }))
+  //   // var animations = collada.animations;
+  //   var avatar = collada.scene;
+  //   // mixer = new THREE.AnimationMixer(avatar);
+  //   // mixer.clipAction(animations[0]).play();
+  //   scene.add(avatar)
+  // });
+  new MTLLoader().load('../xuxu/3333.mlt', function (m) {
+    m.preload()
+    console.log(m)
+    new OBJLoader().setMaterials(m).load('../xuxu/3333.obj', function (a) {
+      scene.add(a)
     })
-    containerScene.add(collada.scene);
-  });
-
-  loader.load('../modules/collada/elf/elf.dae', function (collada) {
-    var girl = collada.scene
-    girl.position.x = 10
-    girl.scale.x = 4
-    girl.scale.y = 4
-    girl.scale.z = 2
-    containerScene.add(girl);
-  });
-
-  loader.load('../modules/collada/stormtrooper/stormtrooper.dae', function (collada) {
-    var animations = collada.animations;
-    var avatar = collada.scene;
-    avatar.position.z = 20
-    mixer = new THREE.AnimationMixer(avatar);
-    mixer.clipAction(animations[0]).play();
-    containerScene.add(avatar);
-  });
-
+  })
   var textureLoader = new THREE.TextureLoader()
   var texture = textureLoader.load('../bg.jpg')
   scene.background = texture
@@ -71,7 +110,7 @@ function init() {
 
   container.appendChild(renderer.domElement);
   control = new OrbitControls(camera, renderer.domElement.parentNode);
-  control.target = new THREE.Vector3(0, 0, 10);
+  control.target = new THREE.Vector3(0, 2, 0);
   // control.enableZoom = false;
   // control.enablePan = false;
   // control.nableRotate = false;
