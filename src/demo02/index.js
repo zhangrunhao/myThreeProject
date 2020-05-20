@@ -20,7 +20,10 @@ function init() {
   camera.position.z = 0.01;
 
   controls = new OrbitControls(camera, renderer.domElement);
-
+  controls.enableZoom = false;
+  controls.enablePan = false;
+  controls.enableDamping = true;
+  controls.rotateSpeed = - 0.25;
 
   var materials = getMaterials();
   var skyBox = new THREE.Mesh(new THREE.BoxBufferGeometry(1, 1, 1), materials);
