@@ -38,16 +38,17 @@ function animate() {
 }
 
 function getMaterials() {
-  var textures = []
   var materials = []
   for (var i = 0; i < vrJpgArr.length; i++) {
-    textures[i] = new THREE.Texture();
     var img  = new Image()
     img.src = vrJpgArr[i];
-    textures[i].image = img;
-    textures[i].needsUpdate = true;
+
+    var texture = new THREE.Texture();
+    texture.image = img;
+    texture.needsUpdate = true;
+
     materials.push(new THREE.MeshBasicMaterial({
-      map: textures[i]
+      map: texture
     }))
   }
   return materials;
